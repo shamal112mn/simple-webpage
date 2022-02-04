@@ -5,26 +5,22 @@ pipeline {
   }
 
   // Create your credential for jenkins
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('shamal317mn-dockerhub')
-  }
-  stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t shamal317mn/simple-webpage Dockerhub-pushImage/'
+   withDockerRegistry(credentialsId: 'dockerCreds', url: ' ') {
+    stages {
+      stage('Build') {
+        steps {
+          sh 'docker build -t shamal317mn/mynginx-app . '
+        }
       }
-    }
-    stage('Login') {
-      steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
-    }
-    stage('Push') {
-      steps {
-        sh 'docker push shamal317mn/simple-webpage'
-      }
+
+      stage('Push') {
+          steps {
+            sh 'docker push shamal317mn/mynginx-app'
+          }
+        }
     }
   }
+     
   post {
     always {
       sh 'docker logout'
