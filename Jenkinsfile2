@@ -8,6 +8,8 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
+        cleanWs()
+        sh 'git checkout master'
         sh 'ls -l'
         sh 'pwd'
         // Clean WS before build
