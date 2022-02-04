@@ -8,6 +8,8 @@ pipeline {
   stages {
       stage('Build') {
         steps {
+          sh 'pwd'
+          sh 'ls -l'
           sh 'docker build -t shamal317mn/mynginx-app . '
         }
       }
