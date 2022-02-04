@@ -1,38 +1,36 @@
-pipeline {
-  environment {
-    registry = "shamal317mn/mynginx-app"
-    registryCredential = 'dockerhub'
-    dockerImage = ''
-  }
-  agent any
-  stages {
-    stage('Cloning Git') {
-      steps {
-        // Clean WS before build
+
+properties([
+    parameters ([
+        choice(choices: ['Deploy', 'Destroy'], description: 'What action', name: 'action')
+    ])
+])
+
+
+node {
+     
+    stage('Git clone') {
         cleanWs()
         git 'https://github.com/shamal112mn/simple-webpage.git'
-      }
     }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+    
+    stage('SSH steps'){
+        sshagent(['master_jenkins_ssh']) {
+             
+            stage('Copy app to remote'){
+                sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml '
+            }
+                    
+            stage('Deploy appl to cluster'){
+                if ( params.action == "Deploy"){
+                    sh 'ssh  vagrant@100.0.0.13  kubectl apply -f mynginx.yaml'
+                }
+                else if ( params.action == "Destroy"){
+                     sh 'ssh  vagrant@100.0.0.13  kubectl delete -f mynginx.yaml'
+                }
+                
+            } 
         }
-      }
     }
-    stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
-        }
-      }
-    }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
-      }
-    }
-  }
 }
+
+
