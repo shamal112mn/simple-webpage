@@ -16,11 +16,11 @@ node {
     stage('SSH steps'){
         sshagent(['master_jenkins_ssh']) {
              
-            stage('Copy app to remote'){
+            stage('Moving appl'){
                 sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml '
             }
                     
-            stage('Deploy appl to cluster'){
+            stage('${params.action} to cluster'){
                 if ( params.action == "Deploy"){
                     sh 'ssh  vagrant@100.0.0.13  kubectl apply -f mynginx.yaml'
                 }
