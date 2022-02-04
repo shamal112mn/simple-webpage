@@ -8,29 +8,35 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/shamal112mn/simple-webpage.git'
+        sh 'ls -l'
+        sh 'pwd'
+        // Clean WS before build
+        // cleanWs()
+        // git 'https://github.com/shamal112mn/simple-webpage.git'
       }
     }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
-      }
-    }
-    stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
-        }
-      }
-    }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
-      }
-    }
+    // stage('Building image') {
+    //   steps{
+    //     script {
+    //       dockerImage = docker.build registry + ":$BUILD_NUMBER"
+    //     }
+    //   }
+    // }
+    // stage('Deploy Image') {
+    //   steps{
+    //     script {
+    //       docker.withRegistry( '', registryCredential ) {
+    //         dockerImage.push()
+    //       }
+    //     }
+    //   }
+    // }
+    // stage('Remove Unused docker image') {
+    //   steps{
+    //     sh "docker rmi $registry:$BUILD_NUMBER"
+    //   }
+    // }
+
+
   }
 }
