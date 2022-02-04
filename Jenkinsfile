@@ -13,10 +13,10 @@ pipeline {
       }
     withDockerRegistry(credentialsId: 'dockerCreds', url: ' ') {
       stage('Push') {
-          steps {
-            sh 'docker push shamal317mn/mynginx-app'
-          }
+        steps {
+          sh 'docker push shamal317mn/mynginx-app'
         }
+      }
     }
   }
      
