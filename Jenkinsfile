@@ -6,14 +6,12 @@ pipeline {
 
   // Create your credential for jenkins
   stages {
-   withDockerRegistry(credentialsId: 'dockerCreds', url: ' ') {
-     
       stage('Build') {
         steps {
           sh 'docker build -t shamal317mn/mynginx-app . '
         }
       }
-
+    withDockerRegistry(credentialsId: 'dockerCreds', url: ' ') {
       stage('Push') {
           steps {
             sh 'docker push shamal317mn/mynginx-app'
