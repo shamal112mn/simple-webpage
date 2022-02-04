@@ -20,7 +20,7 @@ node {
                 sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml '
             }
                     
-            stage('${params.action} to cluster'){
+            stage("${params.action} to cluster"){
                 if ( params.action == "Deploy"){
                     sh 'ssh  vagrant@100.0.0.13  kubectl apply -f mynginx.yaml'
                 }
