@@ -1,14 +1,14 @@
 
+
+
 properties([
-    parameters ([
-        choice(choices: ['Deploy', 'Destroy'], description: 'Select action', name: 'action'),
-        string(defaultValue: '', description: 'Specify TAG', name: 'TAG', trim: true)
-    ])
+  parameters ([
+    choice(choices: ['Deploy', 'Destroy'], description: 'Select action', name: 'action'),
+    string(defaultValue: '', description: 'Specify TAG#', name: 'TAG', trim: true)
+  ])
 ])
 
 int imageTag = Integer.parseInt(params.TAG)
-
-println("Number: " + imageTag)
 
 def application = """
 ---
@@ -55,32 +55,35 @@ status:
   loadBalancer: {}
 """
 
+
 node {
-     
+  if ( params.action == "Deploy"){
     stage('Git clone') {
-        cleanWs()
-        git 'https://github.com/shamal112mn/simple-webpage.git'
+      cleanWs()
+      git 'https://github.com/shamal112mn/simple-webpage.git'
+      writeFile file: "mynginx.yaml", text: "${application}"
     }
-    
-    stage('SSH steps'){
-        sshagent(['master_jenkins_ssh']) {
-             
-            stage('Moving appl'){
-                writeFile file: "mynginx.yaml", text: "${application}"
-                sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml '
-            }
-                    
-            stage("${params.action} to cluster"){
-                if ( params.action == "Deploy"){
-                    sh 'ssh  vagrant@100.0.0.13  kubectl apply -f mynginx.yaml'
-                }
-                else if ( params.action == "Destroy"){
-                     sh 'ssh  vagrant@100.0.0.13  kubectl delete -f mynginx.yaml'
-                }
-                
-            } 
-        }
+
+    sshagent(credentials: ['master_jenkins_ssh']){    
+      stage('Move  appl'){      
+        sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml'
+      }
+              
+      stage("${params.action} to cluster"){       
+          sh 'ssh  vagrant@100.0.0.13  kubectl apply -f mynginx.yaml'
+      }      
+    } 
+  } 
+  else if ( params.action == "Destroy"){
+    stage("${params.action} to cluster"){ 
+      sh 'ssh  vagrant@100.0.0.13  kubectl delete -f mynginx.yaml'
     }
+  }  
 }
+
+   
+
+
+
 
 
