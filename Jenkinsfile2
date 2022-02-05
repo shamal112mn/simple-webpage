@@ -1,10 +1,55 @@
 
 properties([
     parameters ([
-        choice(choices: ['Deploy', 'Destroy'], description: 'What action', name: 'action')
+        choice(choices: ['Deploy', 'Destroy'], description: 'Select action', name: 'action'),
+        string(defaultValue: '', description: 'Specify TAG', name: 'TAG', trim: true)
     ])
 ])
 
+def application = """
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynginx
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shamal317mn/mynginx:"${params.TAG}"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels:
+    app: nginx
+  name: mynginx
+  namespace: default   
+spec:  
+  ports:
+  - nodePort: 30080
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
+"""
 
 node {
      
@@ -17,6 +62,7 @@ node {
         sshagent(['master_jenkins_ssh']) {
              
             stage('Moving appl'){
+                writeFile file: "mynginx.yaml", text: "${application}"
                 sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml '
             }
                     
