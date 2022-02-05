@@ -67,14 +67,16 @@ node {
         sh 'scp mynginx.yaml  vagrant@100.0.0.13:mynginx.yaml'
       }
               
-      stage("${params.action} to cluster"){       
+      stage("${params.action} application"){       
           sh 'ssh  vagrant@100.0.0.13  kubectl apply -f mynginx.yaml'
       }      
     } 
   } 
   else if ( params.action == "Destroy"){
-    stage("${params.action} to cluster"){ 
-      sh 'ssh  vagrant@100.0.0.13  kubectl delete -f mynginx.yaml'
+    sshagent(credentials: ['master_jenkins_ssh']){ 
+      stage("${params.action} application"){ 
+        sh 'ssh  vagrant@100.0.0.13  kubectl delete -f mynginx.yaml'
+      }
     }
   }  
 }
