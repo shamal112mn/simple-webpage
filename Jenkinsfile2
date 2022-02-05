@@ -6,7 +6,7 @@ properties([
     ])
 ])
 
-int imageTag = Interger.parseInt(params.TAG)
+int imageTag = Integer.parseInt(params.TAG)
 
 def application = """
 ---
