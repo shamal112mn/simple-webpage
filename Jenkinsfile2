@@ -6,6 +6,8 @@ properties([
     ])
 ])
 
+int imageTag = Interger.parseInt(params.TAG)
+
 def application = """
 ---
 apiVersion: apps/v1
@@ -26,7 +28,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: shamal317mn/mynginx:${params.TAG}
+        image: shamal317mn/mynginx:${imageTag}
         ports:
         - containerPort: 80
 ---
