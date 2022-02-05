@@ -1,6 +1,4 @@
 
-
-
 properties([
   parameters ([
     choice(choices: ['Deploy', 'Destroy'], description: 'Select action', name: 'action'),
