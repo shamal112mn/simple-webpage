@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: shamal317mn/mynginx-app
+        image: shamal317mn/mynginx
         ports:
         - containerPort: 80
 

@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "shamal317mn/mynginx-app"
+    registry = "shamal317mn/mynginx"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
