@@ -8,6 +8,8 @@ properties([
 
 int imageTag = Integer.parseInt(params.TAG)
 
+println("Number: " + imageTag)
+
 def application = """
 ---
 apiVersion: apps/v1
