@@ -74,6 +74,15 @@ node {
   } 
   else if ( params.action == "Destroy"){
     sshagent(credentials: ['master_jenkins_ssh']){ 
+      
+      stage(" Git skipped") {
+        echo "Git clone was skipped"
+      }
+
+      stage("Move appl skipped") {
+        echo "Movinfg application to remote was skipped"
+      }
+
       stage("${params.action} application"){ 
         sh 'ssh  vagrant@100.0.0.13  kubectl delete -f mynginx.yaml'
       }
