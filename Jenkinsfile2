@@ -20,7 +20,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 1 #${scalePods}
+  replicas: 1  
   selector:
     matchLabels:
       app: nginx
