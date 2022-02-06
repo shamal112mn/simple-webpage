@@ -2,14 +2,13 @@
 properties([
   parameters ([
     choice(choices: ['Deploy', 'Destroy'], description: 'Select action', name: 'action'),
-    string(defaultValue: '', description: 'Specify TAG#', name: 'TAG', trim: true),
-  #  string(defaultValue: '1', description: 'Specify Pods Scale#', name: 'PODS', trim: true)
+    string(defaultValue: '', description: 'Specify TAG#', name: 'TAG', trim: true)
+    
   ])
 ])
 
 if (params.TAG != "" && params.TAG != "Destroy"){
-  int imageTag = Integer.parseInt(params.TAG)
- # int scalePods = Integer.parseInt(params.PODS)
+  int imageTag = Integer.parseInt(params.TAG)  
 }
 
 def application = """
