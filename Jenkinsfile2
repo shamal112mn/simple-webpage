@@ -10,6 +10,7 @@ properties([
 if (params.TAG != "" && params.TAG != "Destroy"){
   int imageTag = Integer.parseInt(params.TAG);
   int scalePods = Integer.parseInt(params.PODS)
+}
 
 def application = """
 ---
@@ -55,7 +56,7 @@ spec:
 status:
   loadBalancer: {}
 """
-}
+
 
 node {
   if ( params.action == "Deploy"){
