@@ -8,7 +8,7 @@ properties([
 ])
 
 if (params.TAG != "" && params.TAG != "Destroy"){
-  int imageTag = Integer.parseInt(params.TAG);
+  int imageTag = Integer.parseInt(params.TAG)
   int scalePods = Integer.parseInt(params.PODS)
 }
 
@@ -21,7 +21,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: ${scalePods}
+  replicas: 1 #${scalePods}
   selector:
     matchLabels:
       app: nginx
