@@ -62,7 +62,7 @@ node {
   if ( params.action == "Deploy"){
     stage('Git clone') {
       cleanWs()
-      git 'https://github.com/shamal112mn/simple-webpage.git'
+      git clone 'https://github.com/shamal112mn/simple-webpage.git'
       writeFile file: "mynginx.yaml", text: "${application}"
     }
 
