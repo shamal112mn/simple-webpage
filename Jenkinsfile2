@@ -6,7 +6,9 @@ properties([
   ])
 ])
 
-int imageTag = Integer.parseInt(params.TAG)
+if (params.TAG != "" && params.TAG != "Destroy"){
+  int imageTag = Integer.parseInt(params.TAG)
+
 
 def application = """
 ---
@@ -52,7 +54,7 @@ spec:
 status:
   loadBalancer: {}
 """
-
+}
 
 node {
   if ( params.action == "Deploy"){
