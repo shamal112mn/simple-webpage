@@ -7,9 +7,8 @@ properties([
   ])
 ])
 
-if (params.TAG != "" && params.TAG != "Destroy"){
-  int imageTag = Integer.parseInt(params.TAG)  
-}
+int imageTag = Integer.parseInt(params.TAG)
+
 
 def application = """
 ---
