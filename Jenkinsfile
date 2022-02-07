@@ -34,5 +34,13 @@ pipeline {
         sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
+
+    stage ('Build SetImage-k8s job'){
+      steps {
+        build wait: true, job: 'setImage-k8s', parameters: [
+          string(name: 'IMAGE_TAG', value: "$BUILD_NUMBER")
+        ]
+      }
+    }
   }
 }
