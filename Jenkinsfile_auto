@@ -35,7 +35,7 @@ pipeline {
       }
     }
 
-    stage ('Build SetImage-k8s job'){
+    stage ('Build SetImage-k8s'){
       steps {
         build wait: true, job: 'setImage-k8s', parameters: [
           string(name: 'IMAGE_TAG', value: "$BUILD_NUMBER")
